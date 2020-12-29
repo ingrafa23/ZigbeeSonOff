@@ -4,53 +4,48 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
 
-
-
-requestpost::requestpost(){
+requestpost::requestpost()
+{
 
 }
 
-
 //funciones de inicialización
-void requestpost::begin(const char *mServer,uint16_t mPort){
+void requestpost::begin(const char *mServer,uint16_t mPort)
+{
 	this->mSERVER = mServer;
 	this->mPORT = mPort;
 }
 
-
-String requestpost::requestPOSTJson(String httpservice,String _mJson){
-
+String requestpost::requestPOSTJson(String httpservice,String _mJson)
+{
   String serverRes;
-  String bodyPic =  bodyJson(_mJson);
-  size_t allLen = bodyPic.length();
+  String bodyPic   =  bodyJson(_mJson);
+  size_t allLen    = bodyPic.length();
   String headerTxt =  headerJson(httpservice,allLen);
 
   WiFiClientSecure client;
-   if (!client.connect(mSERVER,mPORT)) 
-   {
-    return("{ \"connection\" : \"failed\"}");   
-   }
-   client.print(headerTxt+bodyPic);
+  if (!client.connect(mSERVER,mPORT)) 
+  {
+   return("{ \"connection\" : \"failed\"}");   
+  }
+  client.print(headerTxt+bodyPic);
    
 
-   delay(20);
-   long tOut = millis() + TIMEOUT;
-   while(client.connected() && tOut > millis()) 
+  delay(20);
+  long tOut = millis() + TIMEOUT;
+  while(client.connected() && tOut > millis()) 
+  {
+   if (client.available()) 
    {
-        
-    if (client.available()) 
-    {
-         
-      while (client.available()) {
-        char c = client.read();
-        serverRes += String(c);
-      }
-    }
-    
+     while (client.available()) 
+     {
+       char c = client.read();
+       serverRes += String(c);
+     }
    }
+  }
        
-   return serverRes;
-
+  return serverRes;
 }
 
 String requestpost::headerJson(String httpservice,size_t length)

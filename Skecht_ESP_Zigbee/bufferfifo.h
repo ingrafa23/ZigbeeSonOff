@@ -8,24 +8,18 @@
 
 class bufferfifo
 {
-private:
-    /* data */
-    
+    private:
+        unsigned int bufferOrdenesInterprete[MAX_BUFFER_INTERPRTE];
+        unsigned int posIn; 
+        unsigned int posOut;
 
-    unsigned int bufferOrdenesInterprete[MAX_BUFFER_INTERPRTE];
-    unsigned int posIn; 
-    unsigned int posOut;
+    public:
+        bufferfifo(/* args */);
+        ~bufferfifo();
 
-public:
-    bufferfifo(/* args */);
-    ~bufferfifo();
-
-    void fillBuffer(unsigned int command);
-    unsigned char getcomandBuffer();
-    char statusBuffer();
+        void fillBuffer(unsigned int command);
+        unsigned char getcomandBuffer();
+        char statusBuffer();
 };
-
-
-
 
 #endif

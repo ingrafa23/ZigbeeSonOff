@@ -20,36 +20,35 @@ String sendDataJsonApi;
 String dataStringRecibeJson;
 unsigned char dataStringRecibeJsonFlag = 0;
 
-void sendDataJson(String myString, String myApi){
-
+void sendDataJson(String myString, String myApi)
+{
     buffersendDataJsonApi.setStringBuffer(myApi);
     bufferdataStringJson.setStringBuffer(myString);
-
-
 }
 
-
-unsigned char getAvailabSendDataJoson(){
+unsigned char getAvailabSendDataJoson()
+{
     return buffersendDataJsonApi.statusBuffer() && bufferdataStringJson.statusBuffer();
 }
 
-
-String getDataStringRecibeJson(){
+String getDataStringRecibeJson()
+{
     return dataStringRecibeJson;
 }
 
-void beginConfigSendDataJson(){
+void beginConfigSendDataJson()
+{
     requestServer.begin(SERVER,PORT);
 }
 
-void mainSendDataJson(){
-    
-    if (getAvailabSendDataJoson()>0)
+void mainSendDataJson()
+{    
+    if (getAvailabSendDataJoson() > 0)
     {
         Serial1.println("ejecutando mainSendDataJson");
 
         sendDataJsonApi = buffersendDataJsonApi.getStringdBuffer();
-        dataStringJson = bufferdataStringJson.getStringdBuffer();
+        dataStringJson  = bufferdataStringJson.getStringdBuffer();
 
         requestServer.sendJson(sendDataJsonApi,dataStringJson);
         if (requestServer.available())
@@ -57,7 +56,6 @@ void mainSendDataJson(){
             dataStringRecibeJson = requestServer.readJson();
             setJsonStrinfBuffer(dataStringRecibeJson);
         }
-        
     } 
 }
 

@@ -1,10 +1,6 @@
 #include "ota_esp.h"
 
 // includes
-
-
-
-
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
 #include <WiFiUdp.h>
@@ -12,18 +8,13 @@
 #include <WiFiManager.h>
 
 
-
-
-
-
-ota_esp::ota_esp(){
-
+ota_esp::ota_esp()
+{
 }
 
-
 //funciones de inicialización
-void ota_esp::begin(){
-
+void ota_esp::begin()
+{
 	//pinMode(LedStatus,OUTPUT);
 	//digitalWrite(LedStatus,0);
 	//tickerLed.attach(2, parpadeoLed);
@@ -32,9 +23,10 @@ void ota_esp::begin(){
 	beginOta();
 }
 
-void ota_esp::detec(){
-
-	if (WiFi.status() == WL_CONNECTED){
+void ota_esp::detec()
+{
+	if (WiFi.status() == WL_CONNECTED)
+	{
 		ArduinoOTA.handle();
 	}
 	else
@@ -42,16 +34,11 @@ void ota_esp::detec(){
 		Serial1.print("Reconectando WIFI : "); Serial1.println(String(WiFi.SSID()));
 		WiFi.begin();
 	}
-	
-
-  
 }
 
-void ota_esp::beginWifiManager(){
-	
-
-  	
-  	ESP.eraseConfig();
+void ota_esp::beginWifiManager()
+{
+  	//ESP.eraseConfig();
     WiFi.mode(WIFI_STA); // explicitly set mode, esp defaults to STA+AP
     // put your setup code here, to run once:
     Serial1.begin(115200);
@@ -69,27 +56,23 @@ void ota_esp::beginWifiManager(){
     // res = wm.autoConnect("AutoConnectAP"); // anonymous ap
     res = wm.autoConnect(HOSTNAME,PASSWORD_OTA_WIFI_LOCAL); // password protected ap
 	
-
-    if(!res) {
+    if(!res) 
+	{
         Serial1.println("Conexion fallida a la Red Wifi");
         ESP.restart();
     } 
-    else {
+    else 
+	{
         //if you get here you have connected to the WiFi    
         Serial1.println("Conectado a la Red Wifi)");
     }
-	  
-	
-
-
-
 }
 
-void ota_esp::beginOta(){
+void ota_esp::beginOta()
+{
 	this->flag_wifi_ota =0;;
 	// Check WiFi connection
 	
-
 	// Hostname Ota
 	ArduinoOTA.setHostname(HOSTNAME);
 
@@ -97,29 +80,40 @@ void ota_esp::beginOta(){
 	//ArduinoOTA.setPassword(PASSWORD_OTA_WIFI_LOCAL);
 
 	// Check connection
-	if (WiFi.status() == WL_CONNECTED) {
-		
-		ArduinoOTA.onStart([]() {
-		String type;
-		if (ArduinoOTA.getCommand() == U_FLASH) {
-		type = "sketch";
-		} else { // U_FS
-		type = "filesystem";
-		}
+	if (WiFi.status() == WL_CONNECTED) 
+	{
+		ArduinoOTA.onStart([]() 
+		{
+			String type;
+			if (ArduinoOTA.getCommand() == U_FLASH) 
+			{
+				type = "sketch";
+			} 
+			else 
+			{ 
+				// U_FS
+				type = "filesystem";
+			}
 
-		// NOTE: if updating FS this would be the place to unmount FS using FS.end()
-		Serial1.println("Start updating " + type);
-	});
-	ArduinoOTA.onEnd([]() {
-		Serial1.println("\nEnd");
-	});
-	ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) {
-		Serial1.printf("Progress: %u%%\r", (progress / (total / 100)));
-	});
-	ArduinoOTA.onError([](ota_error_t error) {
-		Serial1.printf("Error[%u]: ", error);
-		if (error == OTA_AUTH_ERROR) {
-		Serial1.println("Auth Failed");
+			// NOTE: if updating FS this would be the place to unmount FS using FS.end()
+			Serial1.println("Start updating " + type);
+		});
+
+		ArduinoOTA.onEnd([]() 
+		{
+			Serial1.println("\nEnd");
+		});
+
+		ArduinoOTA.onProgress([](unsigned int progress, unsigned int total) 
+		{
+			Serial1.printf("Progress: %u%%\r", (progress / (total / 100)));
+		});
+
+		ArduinoOTA.onError([](ota_error_t error) 
+		{
+			Serial1.printf("Error[%u]: ", error);
+			if (error == OTA_AUTH_ERROR) {
+				Serial1.println("Auth Failed");
 		} else if (error == OTA_BEGIN_ERROR) {
 		Serial1.println("Begin Failed");
 		} else if (error == OTA_CONNECT_ERROR) {

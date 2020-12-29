@@ -11,25 +11,26 @@ unsigned char estadoBooking;
  * @brief setEstadoBooking asigana un nuevo estadp
  * @param mEstado valor del estado
 */
-void setEstadoBooking(unsigned char mEstado){
+void setEstadoBooking(unsigned char mEstado)
+{
     estadoBooking = mEstado;
-
 }
 
 /**
  * @brief getEstadoBooking obtiene el valor des estado de la maquina
  * @return retorna el estado
 */
-unsigned char getEstadoBooking(){
+unsigned char getEstadoBooking()
+{
     return estadoBooking;
 }
-
 
 /**
  * @brief mainEstadoUnregister es el main que ejuta las tarea de No registrado
 */
-void mainEstadoUnregister(){
- Serial1.println("Ejecutando estado UNREGISTER");
+void mainEstadoUnregister()
+{
+    Serial1.println("Ejecutando estado UNREGISTER");
     // Serializacion Json
     String json_status_unregister;
     
@@ -52,16 +53,15 @@ void mainEstadoUnregister(){
 
     Serial1.print("Enviando json :"); Serial1.println(json_status_unregister);
 
-    sendDataJson(json_status_unregister,"/hw/check_status");
+    //sendDataJson(json_status_unregister,"/hw/check_status");
     // Fin Json
-
 }
-
 
 /**
  * @brief mainEstadoRegister es el main que ejuta las tarea de registrado
 */
-void mainEstadoRegister(){
+void mainEstadoRegister()
+{
     Serial1.println("Ejecutando estado REGISTER");
     // Serializacion Json Estado Register
     String json_status_register;
@@ -81,19 +81,17 @@ void mainEstadoRegister(){
     json_status_register += F("\"ip_addr\":\"");
     json_status_register += WiFi.localIP().toString();
     json_status_register += F("\"}}");
-
     
     Serial1.println(json_status_register);
-    sendDataJson(json_status_register,"/hw/check_status");
+    //sendDataJson(json_status_register,"/hw/check_status");
     // Fin Json
 }
-
-
 
 /**
  * @brief mainEstadoReserved es el main que ejuta las tarea de Reservado
 */
-void mainEstadoReserved(){
+void mainEstadoReserved()
+{
     Serial1.println("Ejecutando estado RESERVED");
     
     // Serializacion Json Estado Register
@@ -117,22 +115,21 @@ void mainEstadoReserved(){
     json_status_register += F("\"}}");
 
     Serial1.println(json_status_register);
-    sendDataJson(json_status_register,"/hw/check_status");
+    //sendDataJson(json_status_register,"/hw/check_status");
     // Fin Json
 }
-
 
 /**
  * @brief mainEstadoBusy es el main que ejuta las tarea de Reservado
 */
 
-void mainEstadoBusy(){
+void mainEstadoBusy()
+{
     Serial1.println("Ejecutando estado BUSY");
     Serial1.println("Ejecutando estado RESERVED");
     Serial1.println("Ejecutando estado REGISTER");
     // Serializacion Json Estado Register
     String json_status_register;
-    
 
     json_status_register = F("{\"device_id\":\"");
     json_status_register += getDeviceId();
@@ -150,8 +147,6 @@ void mainEstadoBusy(){
     json_status_register += F("\"ip_addr\":\"");
     json_status_register += WiFi.localIP().toString();
     json_status_register += F("\"}}");
-
-
     
     Serial1.println(json_status_register);
     //sendDataJson(json_status_register,"/hw/check_status");
@@ -161,31 +156,28 @@ void mainEstadoBusy(){
 /**
  * @brief mainEstadosBooking es la maquina de estado de las diferentes condiciones de operacion
 */
-
-void mainEstadosBooking(){
-    
+void mainEstadosBooking()
+{    
     switch (getEstadoBooking())
     {
-    case ESTADO_UNREGISTER:
-        mainEstadoUnregister();
-        break;
+        case ESTADO_UNREGISTER:
+            mainEstadoUnregister();
+            break;
 
-    case ESTADO_REGISTER:
-        mainEstadoRegister();
-        break;
+        case ESTADO_REGISTER:
+            mainEstadoRegister();
+            break;
 
-    
-    case ESTADO_RESERVED:
-        mainEstadoReserved();
-        break;
-    
-    case ESTADO_BUSY:
-        mainEstadoBusy();
-        break;
-    
-    default:
-        break;
+        
+        case ESTADO_RESERVED:
+            mainEstadoReserved();
+            break;
+        
+        case ESTADO_BUSY:
+            mainEstadoBusy();
+            break;
+        
+        default:
+            break;
     }
 }
-
-

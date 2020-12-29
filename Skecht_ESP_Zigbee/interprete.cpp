@@ -3,12 +3,9 @@
 #include "bufferfifo.h"
 bufferfifo fifoInteprete;
 
-
-
-void beginserial(){
+void beginserial()
+{
 }
-
-
 
 //lista de instrucciones
 #define MAX_ORDENES 9
@@ -29,7 +26,6 @@ char *instrucciones[] = {"continue",                        //0
  * @param b el segundo string a comparar
  * @return retorna true si son iguales o false si son diferentes
 */
-
 char strEqual(char *a, char *b)
 {
     if (a == b)
@@ -45,25 +41,22 @@ char strEqual(char *a, char *b)
  * @param b el segundo string a comparar
  * @return retorna true si son iguales o false si son diferentes
 */
-
-void interpreteIntrucciones(char *commandIntrucciones){
-        
+void interpreteIntrucciones(char *commandIntrucciones)
+{
     for (unsigned int i = 0; i < MAX_ORDENES; i++)
     {
-        /* code */
-        if(strEqual(commandIntrucciones,instrucciones[i])){
+        if(strEqual(commandIntrucciones,instrucciones[i]))
+        {
             fifoInteprete.fillBuffer(i);
             break;
         }
     }
 }
 
-
-void interpreteEjecuta(){
-
-    
-    if(fifoInteprete.statusBuffer()){
-        
+void interpreteEjecuta()
+{    
+    if(fifoInteprete.statusBuffer())
+    {
         unsigned char command = fifoInteprete.getcomandBuffer();
 
         Serial1.print("Comando : ");Serial1.println(command);
@@ -73,7 +66,6 @@ void interpreteEjecuta(){
         switch (command)
         {
             case 0:
-                
                 break;
             
             case 1:
@@ -118,7 +110,5 @@ void interpreteEjecuta(){
             default:
                 break;
         }
-    
     }
-
 }

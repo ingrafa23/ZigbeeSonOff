@@ -2,7 +2,7 @@
 
 bufferfifo::bufferfifo(/* args */)
 {
-    posIn = 0; 
+    posIn  = 0; 
     posOut = 0;
 }
 
@@ -13,10 +13,9 @@ bufferfifo::~bufferfifo()
 /**
  * @brief fillComandBuffer llena el buffer
  * @param command es el valor asociado a un comando que se guarda en el buffer interprete
-
 */
-
-void bufferfifo::fillBuffer(unsigned int command){
+void bufferfifo::fillBuffer(unsigned int command)
+{
     bufferOrdenesInterprete[posIn++] = command;
     
     if (posIn>=MAX_BUFFER_INTERPRTE)
@@ -30,9 +29,8 @@ void bufferfifo::fillBuffer(unsigned int command){
  * @param command es un valor pon puntero, en el cual por el mismo se devolvera el valor
  * @return retonar true si hay data de interes, de lo contraio un false, por que no existe datos
 */
-
-unsigned char bufferfifo::getcomandBuffer(){
-
+unsigned char bufferfifo::getcomandBuffer()
+{
     unsigned int command;
 
     command = bufferOrdenesInterprete[posOut++];
@@ -43,10 +41,9 @@ unsigned char bufferfifo::getcomandBuffer(){
     }
 
     return command;
-    
-
 }
 
-char bufferfifo::statusBuffer(){
+char bufferfifo::statusBuffer()
+{
     return posOut != posIn;
 }

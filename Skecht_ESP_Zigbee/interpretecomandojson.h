@@ -4,7 +4,7 @@
 #include <string.h>
 #include <Arduino.h>
 
-
 void setJsonStrinfBuffer(String mStringJson);
 void mainInterpreteComandosJson();
+
 #endif

@@ -3,7 +3,7 @@
 
 #include "TAREAS.h"
 
-void asignarTareas(TAREA *t, void (*fi)(), void (*fm)(), unsigned char p, unsigned long m)
+void asignarTareas(TAREA *t, void (*fi)(), void (*fm)(), unsigned long p, unsigned long m)
 {
     t->ptr_inicializaTarea = fi;
     t->ptr_tarea_main = fm;
@@ -25,13 +25,17 @@ void incializaTareas(TAREA *tareas, unsigned long momentoActual, unsigned char n
 
 void ejecutaTareas(TAREA *tareas, unsigned long momentoActual, unsigned char numeroTareas) 
 {
-    for (int x = 0;x<numeroTareas;x++)
+    for (int x = 0; x < numeroTareas; x++)
     {
         if(tareas[x].ptr_tarea_main == NULL)
         	continue;
+
+        
       
-        if (abs((unsigned char)(momentoActual -  tareas[x].momentoAnterior)) >= tareas[x].periodo)
+        if (abs((momentoActual -  tareas[x].momentoAnterior)) >= tareas[x].periodo)
         {
+            
+
             tareas[x].momentoAnterior =  momentoActual;
             tareas[x].ptr_tarea_main();
         }

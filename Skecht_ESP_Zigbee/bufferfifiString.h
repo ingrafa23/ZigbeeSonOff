@@ -8,24 +8,19 @@
 
 class bufferfifostring
 {
-private:
-    /* data */
-    
+    private:
+        /* data */
+        String bufferString[MAX_BUFFER_INTERPRTE];
+        unsigned int posIn; 
+        unsigned int posOut;
 
-    String bufferString[MAX_BUFFER_INTERPRTE];
-    unsigned int posIn; 
-    unsigned int posOut;
+    public:
+        bufferfifostring(/* args */);
+        ~bufferfifostring();
 
-public:
-    bufferfifostring(/* args */);
-    ~bufferfifostring();
-
-    void setStringBuffer(String myString);
-    String getStringdBuffer();
-    char statusBuffer();
+        void setStringBuffer(String myString);
+        String getStringdBuffer();
+        char statusBuffer();
 };
-
-
-
 
 #endif

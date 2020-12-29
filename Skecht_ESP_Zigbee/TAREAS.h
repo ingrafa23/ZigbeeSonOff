@@ -24,12 +24,12 @@ typedef struct
 {
     void (*ptr_inicializaTarea)(void); 	
     void (*ptr_tarea_main)(void); 	
-    unsigned char periodo; 
+    unsigned long periodo; 
     unsigned long momentoAnterior;
 } TAREA;
 
-void asignarTareas(TAREA *t, void (*fi)(), void (*fm)(), unsigned char p, unsigned long m);
-void incializaTareas(TAREA *tareas, unsigned long momentoActual, unsigned char numeroTareas) ; 
+void asignarTareas(TAREA *t, void (*fi)(), void (*fm)(), unsigned long p, unsigned long m);
+void incializaTareas(TAREA *tareas, unsigned long momentoActual, unsigned char numeroTareas); 
 void ejecutaTareas(TAREA *tareas, unsigned long momentoActual, unsigned char numeroTareas);
 void setMomento(unsigned long _momento);
 unsigned long getMomento();

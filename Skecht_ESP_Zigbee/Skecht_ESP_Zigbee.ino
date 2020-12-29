@@ -24,13 +24,14 @@
 
 ota_esp conexionOta;
 
-void inicializaOta(){
+void inicializaOta()
+{
     conexionOta.begin();
 }
-void mainOta(){
+void mainOta()
+{
     conexionOta.detec();
 }
-
 
 
 ////OTA end
@@ -42,65 +43,61 @@ void mainOta(){
 //Tareas del Core1
 // Tareas core0 start
 
-void tareaMainInterpreteEjecuta(){
+void tareaMainInterpreteEjecuta()
+{
     interpreteEjecuta();
 }
 
-void tareaMainInterprete(){
-
-    if(Serial1.available()>0){
+void tareaMainInterprete()
+{
+    
+    if(Serial1.available() > 0)
+    {
         char data_recibida[64];
         for (unsigned char i = 0; i < 64; i++)
         {
-            if (Serial1.available()>0){
+            if (Serial1.available() > 0)
+            {
                 data_recibida[i] = (char)Serial1.read();     
             }
             else
             {
                 data_recibida[i]='\0';
-            }
-            
+            }            
         }
         Serial1.println(data_recibida);
         interpreteIntrucciones(data_recibida);
-    }
-    
+    }    
 }
-
-
-
 
 TAREA tareasCore0 [NUMERO_TAREAS_CORE0];
 
-
-void setup() {
-
+void setup() 
+{
     Serial1.begin(115200);
+    ESP.wdtDisable();
+    ESP.wdtFeed();
     Serial1.println("Inicializando el Programa\n");
-
 
     int indiceTareasCore0 = 0;
 
     //Tareas Core 0
     asignarTareas(&tareasCore0[indiceTareasCore0++], inicializaOta, mainOta,  10, 0); //Establece conexionWifi y verifica si hay un load Via OTA
-    asignarTareas(&tareasCore0[indiceTareasCore0++], NULL, mainEstadosBooking,  getValueHeartbeat(), 0); //Maquina de estado Booking
+    asignarTareas(&tareasCore0[indiceTareasCore0++], NULL, mainEstadosBooking,  20000, 0); //Maquina de estado Booking
     asignarTareas(&tareasCore0[indiceTareasCore0++], beginConfigSendDataJson, mainSendDataJson,  1000, 0);
     asignarTareas(&tareasCore0[indiceTareasCore0++], NULL, tareaMainInterprete,  10, 0);
     asignarTareas(&tareasCore0[indiceTareasCore0++], NULL, tareaMainInterpreteEjecuta,  10, 0);
     asignarTareas(&tareasCore0[indiceTareasCore0++], NULL, mainInterpreteComandosJson,  1000, 0);
 
-
     //Inicializa Tareas Core0
     incializaTareas(tareasCore0, getMomento(),NUMERO_TAREAS_CORE0);
-
-
 }
 
 //core 0
 
-void loop() {
+void loop() 
+{
   // put your main code here, to run repeatedly:
-  ejecutaTareas(tareasCore0, getMomento(), NUMERO_TAREAS_CORE0); 
+  ejecutaTareas(tareasCore0, getMomento(), NUMERO_TAREAS_CORE0);
+  delay(1); 
 }
-
-
