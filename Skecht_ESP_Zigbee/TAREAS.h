@@ -8,7 +8,7 @@
 #ifndef TAREAS_INCLUDE
 #define TAREAS_INCLUDE
 #include <stdbool.h>
-
+#include <Arduino.h>
 
 
 /**
@@ -20,30 +20,18 @@
 
 */
 
-typedef struct {
-    void (* ptr_inicializaTarea )( void ) ; // a este metodo se le llamara cuando antes del bule principal
-    void (* ptr_tarea_main  )(void) ; // Tarea a realizar en estado operacinal de la tarjeta, se le pasa el momento en que se razliza
-    unsigned long periodo; 
+typedef struct
+{
+    void (*ptr_inicializaTarea)(void); 	
+    void (*ptr_tarea_main)(void); 	
+    unsigned char periodo; 
     unsigned long momentoAnterior;
-
 } TAREA;
 
-
-
-//Tareas del Core0
-#define NUMERO_TAREAS_CORE0 4
-extern TAREA *creaTareaAtiendeOta(void);
-extern TAREA *creaTareaAtiendeEstadosBooking(void);
-extern TAREA * creaTareaSendDataJson(void);
-extern TAREA *creaTareaEjecutaCheckQR(void);
-
-
-//Tareas del Core1
-#define NUMERO_TAREAS_CORE1 4
-
-extern TAREA * crearTareaEjecutaInterprete (void);
-extern TAREA * creaTareaInterprete (void);
-extern TAREA *creaTareaInterpreteComandosJson(void);
-extern TAREA *creaTareaAtiendeEstadosBookingAroLed(void);
+void asignarTareas(TAREA *t, void (*fi)(), void (*fm)(), unsigned char p, unsigned long m);
+void incializaTareas(TAREA *tareas, unsigned long momentoActual, unsigned char numeroTareas) ; 
+void ejecutaTareas(TAREA *tareas, unsigned long momentoActual, unsigned char numeroTareas);
+void setMomento(unsigned long _momento);
+unsigned long getMomento();
 
 #endif

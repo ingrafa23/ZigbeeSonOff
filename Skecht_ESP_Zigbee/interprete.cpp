@@ -1,7 +1,6 @@
 #include "interprete.h"
 #include "estadobooking.h"
 #include "bufferfifo.h"
-#include "estadosaroled.h"
 bufferfifo fifoInteprete;
 
 
@@ -54,12 +53,9 @@ void interpreteIntrucciones(char *commandIntrucciones){
         /* code */
         if(strEqual(commandIntrucciones,instrucciones[i])){
             fifoInteprete.fillBuffer(i);
-            
             break;
         }
-        
     }
-    
 }
 
 
@@ -70,9 +66,9 @@ void interpreteEjecuta(){
         
         unsigned char command = fifoInteprete.getcomandBuffer();
 
-        Serial.print("Comando : ");Serial.println(command);
+        Serial1.print("Comando : ");Serial1.println(command);
 
-        Serial.println(instrucciones[command]);
+        Serial1.println(instrucciones[command]);
     
         switch (command)
         {
@@ -82,41 +78,41 @@ void interpreteEjecuta(){
             
             case 1:
                 setEstadoBooking(ESTADO_REGISTER);
-                setEstadoAroLed(ESTADO_REGISTER_ARO_LED);
+                //setEstadoAroLed(ESTADO_REGISTER_ARO_LED);
                 break;
             
              case 2:
                 setEstadoBooking(ESTADO_UNREGISTER);
-                setEstadoAroLed(ESTADO_UNREGISTER_ARO_LED);
+                //setEstadoAroLed(ESTADO_UNREGISTER_ARO_LED);
                 break;
 
             case 3:
                 setEstadoBooking(ESTADO_RESERVED);
-                setEstadoAroLed(ESTADO_RESERVED_ARO_LED);
+                //setEstadoAroLed(ESTADO_RESERVED_ARO_LED);
                 break;
 
             case 4:
                 setEstadoBooking(ESTADO_REGISTER);
-                setEstadoAroLed(ESTADO_REGISTER_ARO_LED);
+                //setEstadoAroLed(ESTADO_REGISTER_ARO_LED);
                 break;
 
             case 5:
                 setEstadoBooking(ESTADO_REGISTER);
-                setEstadoAroLed(ESTADO_REGISTER_ARO_LED);
+                //setEstadoAroLed(ESTADO_REGISTER_ARO_LED);
                 break;
 
             case 6:
-                setEstadoAroLed(ESTADO_VALIDATIO_ARO_LED);
+                //setEstadoAroLed(ESTADO_VALIDATIO_ARO_LED);
                 break;
             
             case 7:
                 setEstadoBooking(ESTADO_BUSY);
-                setEstadoAroLed(ESTADO_BUSY_ARO_LED);
+                //setEstadoAroLed(ESTADO_BUSY_ARO_LED);
                 break;
                 
             case 8:
                 setEstadoBooking(ESTADO_REGISTER);
-                setEstadoAroLed(ESTADO_REGISTER_ARO_LED);
+                //setEstadoAroLed(ESTADO_REGISTER_ARO_LED);
                 break;
             
             default:

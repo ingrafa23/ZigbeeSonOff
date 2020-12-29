@@ -8,14 +8,14 @@ extern unsigned long valueHeartbeat;
 extern String spaceId;
 extern String deviceId;
 
-extern void setValueHeartbeat(unsigned long vTime);
-extern unsigned long getValueHeartbeat();
+void setValueHeartbeat(unsigned long vTime);
+unsigned long getValueHeartbeat();
 
-extern void setSpaceId(String vspaceId);
-extern String getSpaceIdt();
+void setSpaceId(String vspaceId);
+String getSpaceIdt();
 
-extern void setDeviceId(String vdeviceId);
-extern String getDeviceId();
+void setDeviceId(String vdeviceId);
+String getDeviceId();
 
 
 #endif

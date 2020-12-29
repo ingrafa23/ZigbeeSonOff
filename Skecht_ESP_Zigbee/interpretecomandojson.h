@@ -5,6 +5,6 @@
 #include <Arduino.h>
 
 
-extern void setJsonStrinfBuffer(String mStringJson);
-
+void setJsonStrinfBuffer(String mStringJson);
+void mainInterpreteComandosJson();
 #endif

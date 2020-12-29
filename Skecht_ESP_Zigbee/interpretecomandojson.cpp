@@ -1,7 +1,6 @@
 #include "interpretecomandojson.h"
 #include "atiendeSendJson.h"
 #include "interprete.h"
-#include "TAREAS.h"
 #include <ArduinoJson.h>
 #include "estadobooking.h"
 #include "configuracionesdevice.h"
@@ -19,19 +18,19 @@ void mainInterpreteComandosJson(){
     
     if (bufferfifoJson.statusBuffer())
     {
-        Serial.println("ejecutando mainInterpreteComandosJson");
+        Serial1.println("ejecutando mainInterpreteComandosJson");
 
         String json_received = bufferfifoJson.getStringdBuffer();
         //json_received = getDataStringRecibeJson();
 
-        Serial.println("--------------------------------------------------");
-        Serial.print("json_received "); Serial.println(json_received);
-        Serial.println("--------------------------------------------------");
+        Serial1.println("--------------------------------------------------");
+        Serial1.print("json_received "); Serial1.println(json_received);
+        Serial1.println("--------------------------------------------------");
 
         StaticJsonDocument<512> doc_received;
         DeserializationError error = deserializeJson(doc_received, json_received);
         if (error) { 
-            Serial.println("ejecutando mainInterpreteComandosJson error");
+            Serial1.println("ejecutando mainInterpreteComandosJson error");
         }
         else{
 
@@ -42,7 +41,7 @@ void mainInterpreteComandosJson(){
 
             //condicion de command
             if(command.length()>0){
-                //Serial.print("command :"); Serial.println(command);
+                //Serial1.print("command :"); Serial1.println(command);
                 char data_interprete[64];
             for (unsigned char i = 0; i < 64; i++)
                 {
@@ -61,7 +60,7 @@ void mainInterpreteComandosJson(){
             if (device_id.length()>0)
             {
                 /* code */
-                //Serial.print("device_id :"); Serial.println(device_id);
+                //Serial1.print("device_id :"); Serial1.println(device_id);
                 setDeviceId(device_id);
             }
 
@@ -69,16 +68,16 @@ void mainInterpreteComandosJson(){
             if (space_id.length()>0)
             {
                 /* code */
-                //Serial.print("space_id :"); Serial.println(space_id);
+                //Serial1.print("space_id :"); Serial1.println(space_id);
                 setSpaceId(space_id);
             }
 
             if (heartbeat>0)
             {
                 /* code */
-                //Serial.print("heartbeat :"); Serial.println(heartbeat);
+                //Serial1.print("heartbeat :"); Serial1.println(heartbeat);
                 setValueHeartbeat(heartbeat);
-                setPeriodoEstadosBooking(getValueHeartbeat());
+                
             }
         }
     }
@@ -86,13 +85,3 @@ void mainInterpreteComandosJson(){
 
 }
 
-
-TAREA tareaInterpreteComandosJson = {NULL, NULL, 0, 0l};
-TAREA *creaTareaInterpreteComandosJson()
-{
-    tareaInterpreteComandosJson.ptr_inicializaTarea =NULL;
-    tareaInterpreteComandosJson.ptr_tarea_main = &mainInterpreteComandosJson;
-    tareaInterpreteComandosJson.periodo = 1000;
-    tareaInterpreteComandosJson.momentoAnterior = 0;
-    return &tareaInterpreteComandosJson;
-}

@@ -16,13 +16,13 @@ extern unsigned char dataStringRecibeJsonFlag;
  * @param myString es el string json a enviar
  * @param myApi es un String con la direcion de la Api donde se va a realizar la consulta
 */
-extern void sendDataJson(String myString, String myApi);
+void sendDataJson(String myString, String myApi);
 
-extern unsigned char getAvailabSendDataJoson();
+unsigned char getAvailabSendDataJoson();
 
-extern String getDataStringRecibeJson();
+String getDataStringRecibeJson();
 
-
-
+void beginConfigSendDataJson();
+void mainSendDataJson();
 
 #endif

@@ -1,7 +1,7 @@
 #include "requestpost.h"
 
 // includes
-#include <WiFi.h>
+#include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
 
 
@@ -25,24 +25,24 @@ String requestpost::requestPOSTJson(String httpservice,String _mJson){
   size_t allLen = bodyPic.length();
   String headerTxt =  headerJson(httpservice,allLen);
 
-  WiFiClientSecure mclient;
-   if (!mclient.connect(mSERVER,mPORT)) 
+  WiFiClientSecure client;
+   if (!client.connect(mSERVER,mPORT)) 
    {
     return("{ \"connection\" : \"failed\"}");   
    }
-   mclient.print(headerTxt+bodyPic);
+   client.print(headerTxt+bodyPic);
    
 
    delay(20);
    long tOut = millis() + TIMEOUT;
-   while(mclient.connected() && tOut > millis()) 
+   while(client.connected() && tOut > millis()) 
    {
         
-    if (mclient.available()) 
+    if (client.available()) 
     {
          
-      while (mclient.available()) {
-        char c = mclient.read();
+      while (client.available()) {
+        char c = client.read();
         serverRes += String(c);
       }
     }
@@ -98,9 +98,9 @@ void requestpost::callbackJson(){
 	if(this-> flag_send == true){
 		IOMessegue = requestPOSTJson(this-> httpservice,this-> IOMessegue);
 
-    Serial.println("--------------------------------------------------");
-    Serial.print("IOMessegue "); Serial.println(IOMessegue);
-    Serial.println("--------------------------------------------------");
+    Serial1.println("--------------------------------------------------");
+    Serial1.print("IOMessegue "); Serial1.println(IOMessegue);
+    Serial1.println("--------------------------------------------------");
 
 		int posIn = IOMessegue.indexOf("HTTP/1.1 ");
 		int posOut = IOMessegue.indexOf("\n",posIn);

@@ -1,9 +1,8 @@
 #include "estadobooking.h"
-#include "TAREAS.h"
 #include <ArduinoJson.h>
 #include "atiendeSendJson.h"
 #include "configuracionesdevice.h"
-#include <WiFi.h>
+#include <ESP8266WiFi.h>
 
 
 unsigned char estadoBooking;
@@ -30,7 +29,7 @@ unsigned char getEstadoBooking(){
  * @brief mainEstadoUnregister es el main que ejuta las tarea de No registrado
 */
 void mainEstadoUnregister(){
- Serial.println("Ejecutando estado UNREGISTER");
+ Serial1.println("Ejecutando estado UNREGISTER");
     // Serializacion Json
     String json_status_unregister;
     
@@ -51,7 +50,7 @@ void mainEstadoUnregister(){
     json_status_unregister += WiFi.localIP().toString();
     json_status_unregister += F("\"}}");
 
-    Serial.print("Enviando json :"); Serial.println(json_status_unregister);
+    Serial1.print("Enviando json :"); Serial1.println(json_status_unregister);
 
     sendDataJson(json_status_unregister,"/hw/check_status");
     // Fin Json
@@ -63,7 +62,7 @@ void mainEstadoUnregister(){
  * @brief mainEstadoRegister es el main que ejuta las tarea de registrado
 */
 void mainEstadoRegister(){
-    Serial.println("Ejecutando estado REGISTER");
+    Serial1.println("Ejecutando estado REGISTER");
     // Serializacion Json Estado Register
     String json_status_register;
     json_status_register = F("{\"device_id\":\"");
@@ -84,7 +83,7 @@ void mainEstadoRegister(){
     json_status_register += F("\"}}");
 
     
-    Serial.println(json_status_register);
+    Serial1.println(json_status_register);
     sendDataJson(json_status_register,"/hw/check_status");
     // Fin Json
 }
@@ -95,7 +94,7 @@ void mainEstadoRegister(){
  * @brief mainEstadoReserved es el main que ejuta las tarea de Reservado
 */
 void mainEstadoReserved(){
-    Serial.println("Ejecutando estado RESERVED");
+    Serial1.println("Ejecutando estado RESERVED");
     
     // Serializacion Json Estado Register
     String json_status_register;
@@ -117,7 +116,7 @@ void mainEstadoReserved(){
     json_status_register += WiFi.localIP().toString();
     json_status_register += F("\"}}");
 
-    Serial.println(json_status_register);
+    Serial1.println(json_status_register);
     sendDataJson(json_status_register,"/hw/check_status");
     // Fin Json
 }
@@ -128,9 +127,9 @@ void mainEstadoReserved(){
 */
 
 void mainEstadoBusy(){
-    Serial.println("Ejecutando estado BUSY");
-    Serial.println("Ejecutando estado RESERVED");
-    Serial.println("Ejecutando estado REGISTER");
+    Serial1.println("Ejecutando estado BUSY");
+    Serial1.println("Ejecutando estado RESERVED");
+    Serial1.println("Ejecutando estado REGISTER");
     // Serializacion Json Estado Register
     String json_status_register;
     
@@ -154,8 +153,8 @@ void mainEstadoBusy(){
 
 
     
-    Serial.println(json_status_register);
-    sendDataJson(json_status_register,"/hw/check_status");
+    Serial1.println(json_status_register);
+    //sendDataJson(json_status_register,"/hw/check_status");
     // Fin Json
 }
 
@@ -189,20 +188,4 @@ void mainEstadosBooking(){
     }
 }
 
-
-
-TAREA tareaEstadosBooking = {NULL, NULL, 0, 0l};
-TAREA *creaTareaAtiendeEstadosBooking()
-{
-    tareaEstadosBooking.ptr_inicializaTarea =NULL;
-    tareaEstadosBooking.ptr_tarea_main = &mainEstadosBooking;
-    tareaEstadosBooking.periodo = getValueHeartbeat();
-    tareaEstadosBooking.momentoAnterior = 0;
-    return &tareaEstadosBooking;
-}
-
-
-void setPeriodoEstadosBooking(unsigned long mperiodo){
-    tareaEstadosBooking.periodo = mperiodo;
-}
 

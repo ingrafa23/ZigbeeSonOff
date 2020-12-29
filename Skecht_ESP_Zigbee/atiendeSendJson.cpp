@@ -1,7 +1,6 @@
 #include "atiendeSendJson.h"
 #include "interpretecomandojson.h"
 #include "bufferfifiString.h"
-#include "TAREAS.h"
 #include <Arduino.h>
 
 #include "requestpost.h"
@@ -47,7 +46,7 @@ void mainSendDataJson(){
     
     if (getAvailabSendDataJoson()>0)
     {
-        Serial.println("ejecutando mainSendDataJson");
+        Serial1.println("ejecutando mainSendDataJson");
 
         sendDataJsonApi = buffersendDataJsonApi.getStringdBuffer();
         dataStringJson = bufferdataStringJson.getStringdBuffer();
@@ -63,12 +62,3 @@ void mainSendDataJson(){
 }
 
 
-TAREA tareaSendDataJson = {NULL, NULL, 0, 0l};
-TAREA *creaTareaSendDataJson()
-{
-    tareaSendDataJson.ptr_inicializaTarea =&beginConfigSendDataJson;
-    tareaSendDataJson.ptr_tarea_main = &mainSendDataJson;
-    tareaSendDataJson.periodo = 1000;
-    tareaSendDataJson.momentoAnterior = 0;
-    return &tareaSendDataJson;
-}
