@@ -19,7 +19,7 @@
 //-----------------
 //Union y Estructura de dispositivos vinvulados
 #define NUM_SENSORES_MOVIMIENTO 10
-#define TIME_OUT_DES 60000 //--->
+#define TIME_OUT_DES 900000 //---> 15min
 typedef struct protocoloZigbeeDevice
 {
   unsigned char mac[8];

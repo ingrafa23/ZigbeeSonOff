@@ -43,13 +43,13 @@ void mainEstadoUnregister(unsigned char _numSensor)
 
     json_status_register += "\"sensor_value\":\"" + getValueSensor(_numSensor) + "\",";
 
-    json_status_register += "\"customer_id\":\"None\",";
+    json_status_register += "\"customer_id\":\""+getCustomerId()+"\",";
 
-    json_status_register += "\"state\":\"unregistered\",";
+    json_status_register += "\"state\":\"unregister\",";
 
     json_status_register += "\"space_id\":\"" + getSpaceIdt() + "\",";
 
-    json_status_register += "\"settings\":{\"heartbeat\":20,";
+    json_status_register += "\"settings\":{\"heartbeat\":"+String(getValueHeartbeat()/1000.0)+",";
 
     json_status_register += "\"ip_addr\":\"" + WiFi.localIP().toString() + "\",";
 
@@ -57,7 +57,7 @@ void mainEstadoUnregister(unsigned char _numSensor)
 
     Serial1.print("Enviando json :"); Serial1.println(json_status_register);
 
-    //sendDataJson(json_status_unregister,"/hw/check_status");
+    sendDataJson(json_status_register,getNodeAPI());
     // Fin Json
 }
 
@@ -75,13 +75,13 @@ void mainEstadoRegister(unsigned char _numSensor)
 
     json_status_register += "\"sensor_value\":\"" + getValueSensor(_numSensor) + "\",";
 
-    json_status_register += "\"customer_id\":\"None\",";
+    json_status_register += "\"customer_id\":\""+getCustomerId()+"\",";
 
     json_status_register += "\"state\":\"ready\",";
 
     json_status_register += "\"space_id\":\"" + getSpaceIdt() + "\",";
 
-    json_status_register += "\"settings\":{\"heartbeat\":20,";
+    json_status_register += "\"settings\":{\"heartbeat\":"+String(getValueHeartbeat()/1000.0)+",";
 
     json_status_register += "\"ip_addr\":\"" + WiFi.localIP().toString() + "\",";
 
@@ -90,7 +90,7 @@ void mainEstadoRegister(unsigned char _numSensor)
     
     
     Serial1.println(json_status_register);
-    //sendDataJson(json_status_register,"/hw/check_status");
+    sendDataJson(json_status_register,getNodeAPI());
     // Fin Json
 }
 
@@ -109,13 +109,13 @@ void mainEstadoReserved(unsigned char _numSensor)
 
     json_status_register += "\"sensor_value\":\"" + getValueSensor(_numSensor) + "\",";
     
-    json_status_register += "\"customer_id\":\"None\",";
+    json_status_register += "\"customer_id\":\""+getCustomerId()+"\",";
 
     json_status_register += "\"state\":\"waiting_confirmation\",";
 
     json_status_register += "\"space_id\":\"" + getSpaceIdt() + "\",";
 
-    json_status_register += "\"settings\":{\"heartbeat\":20,";
+    json_status_register += "\"settings\":{\"heartbeat\":"+String(getValueHeartbeat()/1000.0)+",";
 
     json_status_register += "\"ip_addr\":\"" + WiFi.localIP().toString() + "\",";
 
@@ -124,7 +124,7 @@ void mainEstadoReserved(unsigned char _numSensor)
     Serial1.print("Enviando json :"); Serial1.println(json_status_register);
 
     Serial1.println(json_status_register);
-    //sendDataJson(json_status_register,"/hw/check_status");
+    sendDataJson(json_status_register,getNodeAPI());
     // Fin Json
 }
 
@@ -135,8 +135,6 @@ void mainEstadoReserved(unsigned char _numSensor)
 void mainEstadoBusy(unsigned char _numSensor)
 {
     Serial1.println("Ejecutando estado BUSY");
-    Serial1.println("Ejecutando estado RESERVED");
-    Serial1.println("Ejecutando estado REGISTER");
     // Serializacion Json Estado booked
     
     String json_status_register;
@@ -146,13 +144,13 @@ void mainEstadoBusy(unsigned char _numSensor)
 
     json_status_register += "\"sensor_value\":\"" + getValueSensor(_numSensor) + "\",";
 
-    json_status_register += "\"customer_id\":\"None\",";
+    json_status_register += "\"customer_id\":\""+getCustomerId()+"\",";
 
     json_status_register += "\"state\":\"booked\",";
 
     json_status_register += "\"space_id\":\"" + getSpaceIdt() + "\",";
 
-    json_status_register += "\"settings\":{\"heartbeat\":20,";
+    json_status_register += "\"settings\":{\"heartbeat\":"+String(getValueHeartbeat()/1000.0)+",";
 
     json_status_register += "\"ip_addr\":\"" + WiFi.localIP().toString() + "\",";
 
@@ -162,7 +160,44 @@ void mainEstadoBusy(unsigned char _numSensor)
 
     Serial1.println(json_status_register);
 
-    //sendDataJson(json_status_register,"/hw/check_status");
+    sendDataJson(json_status_register,getNodeAPI());
+    // Fin Json
+}
+
+/**
+ * @brief mainEstadoError es el main que ejuta las tarea del sernsor no conectado
+*/
+
+void mainEstadoError(unsigned char _numSensor)
+{
+    Serial1.println("Ejecutando estado ERROR");
+
+    // Serializacion Json Estado booked
+    
+    String json_status_register;
+    json_status_register = "{\"sensor_id\":\"" + getDeviceIdSensor(_numSensor) + "\",";
+
+    json_status_register += "\"sensor_mac\":\"" + getDeviceMacSensor(_numSensor) + "\",";
+
+    json_status_register += "\"sensor_value\":\"" + getValueSensor(_numSensor) + "\",";
+
+    json_status_register += "\"customer_id\":\""+getCustomerId()+"\",";
+
+    json_status_register += "\"state\":\"no_connected\",";
+
+    json_status_register += "\"space_id\":\"" + getSpaceIdt() + "\",";
+
+    json_status_register += "\"settings\":{\"heartbeat\":"+String(getValueHeartbeat()/1000.0)+",";
+
+    json_status_register += "\"ip_addr\":\"" + WiFi.localIP().toString() + "\",";
+
+    json_status_register += "\"device_mac\":\"" + getMacBridge() + "\"}}";
+
+    Serial1.print("Enviando json :"); Serial1.println(json_status_register);
+
+    Serial1.println(json_status_register);
+
+    sendDataJson(json_status_register,getNodeAPI());
     // Fin Json
 }
 
@@ -200,7 +235,7 @@ void mainEstadosBooking()
         }
         else
         {
-            Serial1.print("Sensor "); Serial1.print(ki);Serial1.println(" No conectado");
+            mainEstadoError(ki);
         }
         
         

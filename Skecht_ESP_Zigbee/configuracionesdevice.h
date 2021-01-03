@@ -17,5 +17,8 @@ String getSpaceIdt();
 void setDeviceId(String vdeviceId);
 String getDeviceId();
 
+ String getCustomerId();
+ void setCustomerId(String m);
+
 
 #endif

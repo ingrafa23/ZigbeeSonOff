@@ -35,8 +35,8 @@ void mainInterpreteComandosJson()
         }
         else
         {
-            String device_id = doc_received["device_id"];
-            String device_mac = doc_received["device_mac"];
+            String sensor_id = doc_received["sensor_id"];
+            String sensor_mac = doc_received["sensor_mac"];
             String command = doc_received["command"];
             String space_id = doc_received["space_id"];
             //int heartbeat = doc_received["settings"]["heartbeat"];
@@ -58,7 +58,7 @@ void mainInterpreteComandosJson()
                     }
                 }
 
-                char myNumSensor = getNumeroSensor(device_id,device_mac);
+                char myNumSensor = getNumeroSensor(sensor_id,sensor_mac);
                 if (myNumSensor>=0)
                 {
                     interpreteIntrucciones(data_interprete,myNumSensor);
@@ -67,11 +67,11 @@ void mainInterpreteComandosJson()
                  
             }
 
-            if (device_id.length()>0)
+            if (sensor_id.length()>0)
             {
                 /* code */
-                //Serial1.print("device_id :"); Serial1.println(device_id);
-                setDeviceId(device_id);
+                //Serial1.print("sensor_id :"); Serial1.println(sensor_id);
+                setDeviceId(sensor_id);
             }
 
             if (space_id.length()>0)

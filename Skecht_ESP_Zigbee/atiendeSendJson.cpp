@@ -8,8 +8,13 @@ requestpost requestServer;
 
 #include <WiFiClient.h>
 WiFiClient client;
-#define SERVER     "api.infinito.apeiroo.com"
-#define PORT     443
+#define SERVER     "192.168.1.132"   //"api.infinito.apeiroo.com"
+#define NODE_API   "/read_json/"    /*/hw/check_status*/
+#define PORT       8000             //443
+
+String getNodeAPI(){
+    return NODE_API;
+}
 
 bufferfifostring buffersendDataJsonApi;
 bufferfifostring bufferdataStringJson;

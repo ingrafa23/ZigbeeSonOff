@@ -25,4 +25,6 @@ String getDataStringRecibeJson();
 void beginConfigSendDataJson();
 void mainSendDataJson();
 
+String getNodeAPI();
+
 #endif

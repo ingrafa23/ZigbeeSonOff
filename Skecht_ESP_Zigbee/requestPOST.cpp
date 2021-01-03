@@ -3,7 +3,7 @@
 // includes
 #include <ESP8266WiFi.h>
 #include <WiFiClientSecure.h>
-
+#include <WiFiClient.h>
 requestpost::requestpost()
 {
 
@@ -23,7 +23,11 @@ String requestpost::requestPOSTJson(String httpservice,String _mJson)
   size_t allLen    = bodyPic.length();
   String headerTxt =  headerJson(httpservice,allLen);
 
-  WiFiClientSecure client;
+  //WiFiClientSecure client;
+  WiFiClient client;
+  
+  
+
   if (!client.connect(mSERVER,mPORT)) 
   {
    return("{ \"connection\" : \"failed\"}");   
@@ -93,9 +97,11 @@ void requestpost::callbackJson(){
 	if(this-> flag_send == true){
 		IOMessegue = requestPOSTJson(this-> httpservice,this-> IOMessegue);
 
+    /*
     Serial1.println("--------------------------------------------------");
     Serial1.print("IOMessegue "); Serial1.println(IOMessegue);
     Serial1.println("--------------------------------------------------");
+    */
 
 		int posIn = IOMessegue.indexOf("HTTP/1.1 ");
 		int posOut = IOMessegue.indexOf("\n",posIn);

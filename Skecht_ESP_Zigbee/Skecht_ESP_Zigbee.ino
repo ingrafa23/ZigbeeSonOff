@@ -85,7 +85,7 @@ void setup()
 
     //Tareas Core 0
     asignarTareas(&tareasCore0[indiceTareasCore0++], inicializaOta, mainOta,  10, 0); //Establece conexionWifi y verifica si hay un load Via OTA
-    asignarTareas(&tareasCore0[indiceTareasCore0++], NULL, mainEstadosBooking,  20000, 0); //Maquina de estado Booking
+    asignarTareas(&tareasCore0[indiceTareasCore0++], NULL, mainEstadosBooking,  getValueHeartbeat(), 0); //Maquina de estado Booking
     asignarTareas(&tareasCore0[indiceTareasCore0++], beginConfigSendDataJson, mainSendDataJson,  1000, 0);
     asignarTareas(&tareasCore0[indiceTareasCore0++], NULL, tareaMainInterprete,  10, 0);
     asignarTareas(&tareasCore0[indiceTareasCore0++], NULL, tareaMainInterpreteEjecuta,  10, 0);
