@@ -5,6 +5,7 @@
 #include "estadobooking.h"
 #include "configuracionesdevice.h"
 #include "bufferfifiString.h"
+#include "com_zigbee.h"
 
 bufferfifostring bufferfifoJson;
 
@@ -16,10 +17,9 @@ void setJsonStrinfBuffer(String mStringJson)
 
 void mainInterpreteComandosJson()
 {    
+    //Serial1.println("ejecutando mainInterpreteComandosJson");
     if (bufferfifoJson.statusBuffer())
     {
-        Serial1.println("ejecutando mainInterpreteComandosJson");
-
         String json_received = bufferfifoJson.getStringdBuffer();
         //json_received = getDataStringRecibeJson();
 
@@ -36,9 +36,10 @@ void mainInterpreteComandosJson()
         else
         {
             String device_id = doc_received["device_id"];
+            String device_mac = doc_received["device_mac"];
             String command = doc_received["command"];
             String space_id = doc_received["space_id"];
-            int heartbeat = doc_received["settings"]["heartbeat"];
+            //int heartbeat = doc_received["settings"]["heartbeat"];
 
             //condicion de command
             if(command.length() > 0)
@@ -56,7 +57,14 @@ void mainInterpreteComandosJson()
                         data_interprete[i]='\0';
                     }
                 }
-                interpreteIntrucciones(data_interprete); 
+
+                char myNumSensor = getNumeroSensor(device_id,device_mac);
+                if (myNumSensor>=0)
+                {
+                    interpreteIntrucciones(data_interprete,myNumSensor);
+                }
+                
+                 
             }
 
             if (device_id.length()>0)
@@ -73,12 +81,14 @@ void mainInterpreteComandosJson()
                 setSpaceId(space_id);
             }
 
+            /*
             if (heartbeat>0)
             {
-                /* code */
+                
                 //Serial1.print("heartbeat :"); Serial1.println(heartbeat);
                 setValueHeartbeat(heartbeat);                
             }
+            */
         }
     }
 }

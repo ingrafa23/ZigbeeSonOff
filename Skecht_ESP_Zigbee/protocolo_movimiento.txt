@@ -1,0 +1,74 @@
+Boton explorar
+Recv Data: FE 0B 02 01 02 F9 FF 00 0D 37 C8 
+Send Data: FE 0B 02 41 02 F9 FF 00 0D 00 BF  
+
+Agregando sensor
+NodeID=E5A mac:BC:D3:90:1F:00:4B:12:00ParentOfNewNode=0, status = 0 decision=3
+Processing message: len=12 profile=0000 cluster=0013
+RX: ZDO, command 0x0013, status: 0x00
+Device Announce: 0x0e5a
+addr=0E5A srcPort=00 dstPort=00 ProfileID=0000 clusterId=0013 options=0000 groupId=0000 sequence=0000 radius=0000
+message:00 5A 0E BC D3 90 1F 00 4B 12 00 80 
+Send Data:FE 15 02 82 02 5A 0E 00 06 5A 0E BC D3 90 1F 00 4B 12 00 03 D5 
+
+
+
+payload[00 00 00 00 00 00 ]
+Send Data: FE 10 09 83 02 5A 0E 01 02 00 00 00 00 00 00 31 
+
+Recv Data: FE 0A 02 03 02 5A 0E 00 00 A3 
+Send Data: FE 0B 02 43 02 5A 0E 00 00 00 E2 
+
+message:17 00 5A 0E 01 01 
+Send Data: FE 0D 02 83 02 5A 0E 00 03 00 01 01 27 
+
+Recv Data: FE 0A 02 04 02 5A 0E 01 00 A5 
+Send Data: FE 0B 02 44 02 5A 0E 01 00 00 E4 
+
+Processing message: len=23 profile=0000 cluster=8004
+RX: ZDO, command 0x8004, status: 0x00
+RX: Simple Desc Resp
+addr=0E5A srcPort=00 dstPort=00 ProfileID=0000 clusterId=8004 options=0100 groupId=0000 sequence=0004 radius=0000
+message:18 00 5A 0E 12 01 04 01 02 04 00 04 00 00 03 00 00 05 01 00 01 03 00
+
+Send Data: FE 1C 02 84 02 5A 0E 01 04 00 04 01 02 04 00 04 00 00 03 00 00 05 01 00 01 03 00 35 
+Recv Data: FE 0E 03 01 02 5A 0E 01 11 00 05 01 00 B0 
+Send Data: FE 0B 03 41 02 5A 0E 01 11 00 F1 
+Recv Data: FE 0A 04 01 02 5A 0E 01 86 20 --
+Send Data: FE 0B 04 41 02 5A 0E 01 86 00 61 --
+
+payload[01 00 00 31 0d 00 ]
+01 00 00 31 0D 00 
+Send Data: FE 11 03 81 02 5A 0E 01 09 00 00 05 01 00 0D 00 3A --
+payload[04 00 00 42 07 65 57 65 4c 69 6e 6b 05 00 00 42 04 4d 53 30 31 06 00 00 42 08 32 30 31 39 31 31 30 37 01 00 00 20 03 ]
+
+Send Data:FE 5C 04 81 02 5A 0E 01 0A 00 65 57 65 4C 69 6E 6B FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF 4D 53 30 31 FF FF 
+FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF 32 30 31 39 31 31 30 37 FF FF FF FF FF FF FF FF 03 E3 
+
+payload[01 00 00 00 00 00 ] [Z3Coord_callbacks.c:emberAfIasZoneClusterZoneStatusChangeNotificationCallback]
+Send Data: FE 10 09 83 02 5A 0E 01 07 01 00 00 00 00 00 35 --
+
+Recv Data: FE 1F 02 07 02 5A 0E 00 10 BC D3 90 1F 00 4B 12 00 01 01 00 03 E1 CD 45 FE FF 23 A4 60 01 96 -- aqui
+Send Data: FE 0B 02 47 02 5A 0E 00 10 00 F6 --
+Send Data: FE 0B 02 87 02 5A 0E 00 08 00 2E --
+Recv Data: FE 0E 03 01 02 5A 0E 01 12 00 05 02 00 B0 --
+Send Data: FE 0B 03 41 02 5A 0E 01 12 00 F2 --
+Recv Data: FE 0C 04 10 02 5A 0E 01 13 00 00 A2 
+Send Data: FE 0B 04 50 02 5A 0E 01 13 00 E5 
+
+
+
+payload[02 00 00 19 01 00 ]
+Send Data: FE 11 03 81 02 5A 0E 01 0B 00 00 05 02 00 01 00 37 --
+
+
+payload[20 00 00 20 1c 21 00 00 20 1b ]
+
+Send Data: FE 0E 04 90 02 5A 0E 01 0C 00 1C 1B FF C7 
+Recv Data: FE 0B 02 01 02 F9 FF 00 14 00 E6 
+pJoin for 0 sec: 0x00
+Send Data: FE 0B 02 41 02 F9 FF 00 14 00 A6  
+
+eliminar un sensor
+Recv Data: FE 12 02 17 02 23 8C 01 09 E6 CE 90 1F 00 4B 12 00 A2
+

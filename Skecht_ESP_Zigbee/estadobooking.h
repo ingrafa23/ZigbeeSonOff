@@ -11,7 +11,7 @@
 #define ESTADO_BUSY 3
 
 extern unsigned char estadoBooking;
-void setEstadoBooking(unsigned char mEstado);
+void setEstadoBooking(unsigned char mEstado, unsigned char _numSensor);
 unsigned char getEstadoBooking();
 void mainEstadosBooking();
 

@@ -5,7 +5,7 @@
 #include <ESP8266mDNS.h>
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
-#include <WiFiManager.h>
+#include "WiFiManagerModificado.h"
 
 
 ota_esp::ota_esp()
@@ -18,7 +18,7 @@ void ota_esp::begin()
 	//pinMode(LedStatus,OUTPUT);
 	//digitalWrite(LedStatus,0);
 	//tickerLed.attach(2, parpadeoLed);
-	beginWifiManager();
+	beginWiFiManagerModificado();
 	//Begin WiFi And OTA --------------------------------
 	beginOta();
 }
@@ -36,17 +36,21 @@ void ota_esp::detec()
 	}
 }
 
-void ota_esp::beginWifiManager()
+void ota_esp::beginWiFiManagerModificado()
 {
-  	//ESP.eraseConfig();
+	
+
+	//WiFi.disconnect();
+	ESP. wdtDisable(); 
+	//ESP.eraseConfig();
     WiFi.mode(WIFI_STA); // explicitly set mode, esp defaults to STA+AP
-    // put your setup code here, to run once:
-    Serial1.begin(115200);
+    //WiFi.config(ip, gateway, subnet);
+
     //WiFi.mode(WiFi_STA); // it is a good practice to make sure your code sets wifi mode how you want it.
-    //WiFiManager, Local intialization. Once its business is done, there is no need to keep it around
-    WiFiManager wm;
+    //WiFiManagerModificado, Local intialization. Once its business is done, there is no need to keep it around
+    WiFiManagerModificado wm;
     //reset settings - wipe credentials for testing
-    wm.resetSettings();
+    //wm.resetSettings();
     // Automatically connect using saved credentials,
     // if connection fails, it starts an access point with the specified name ( "AutoConnectAP"),
     // if empty will auto generate SSID, if password is blank it will be anonymous AP (wm.autoConnect())
@@ -55,17 +59,18 @@ void ota_esp::beginWifiManager()
     // res = wm.autoConnect(); // auto generated AP name from chipid
     // res = wm.autoConnect("AutoConnectAP"); // anonymous ap
     res = wm.autoConnect(HOSTNAME,PASSWORD_OTA_WIFI_LOCAL); // password protected ap
-	
-    if(!res) 
-	{
-        Serial1.println("Conexion fallida a la Red Wifi");
+
+    if(!res) {
+        Serial1.println("****Failed to connect****");
+        WiFi.disconnect();
+        wm.resetSettings();
         ESP.restart();
-    } 
-    else 
-	{
-        //if you get here you have connected to the WiFi    
-        Serial1.println("Conectado a la Red Wifi)");
     }
+	else
+	{
+		Serial1.println("****Conectado.....****");
+	}
+	
 }
 
 void ota_esp::beginOta()

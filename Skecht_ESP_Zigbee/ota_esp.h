@@ -18,7 +18,7 @@ public:
 
 private:
 
-	void beginWifiManager();
+	void beginWiFiManagerModificado();
 	void beginOta();
 	volatile uint8_t flag_wifi_ota;
 	

@@ -15,11 +15,23 @@ void incializaTareas(TAREA *tareas, unsigned long momentoActual, unsigned char n
 {
     for (int x = 0; x < numeroTareas; x++) 
     {
-        if (tareas[x].ptr_inicializaTarea != NULL) 
+        Serial1.print("Tarea : "); Serial1.println(x);
+        if(tareas[x].ptr_inicializaTarea == NULL)
+        {
+        	tareas[x].momentoAnterior = momentoActual;
+        }
+        else
         {
             tareas[x].ptr_inicializaTarea();
             tareas[x].momentoAnterior = momentoActual;
         }
+        
+        /*if (tareas[x].ptr_inicializaTarea != NULL) 
+        {
+            tareas[x].ptr_inicializaTarea();
+            tareas[x].momentoAnterior = momentoActual;
+        }
+        */
     }
 }
 
@@ -27,18 +39,20 @@ void ejecutaTareas(TAREA *tareas, unsigned long momentoActual, unsigned char num
 {
     for (int x = 0; x < numeroTareas; x++)
     {
+        
         if(tareas[x].ptr_tarea_main == NULL)
         	continue;
 
         
-      
+        //Serial1.print("Tiempo Tarea ");Serial1.print(x);Serial1.print(" ===> "); Serial1.println(abs(momentoActual -  tareas[x].momentoAnterior));
+        //delay(100);
         if (abs((momentoActual -  tareas[x].momentoAnterior)) >= tareas[x].periodo)
         {
-            
-
+            //Serial1.print("Ejecutando Tarea : ");Serial1.println(x);
             tareas[x].momentoAnterior =  momentoActual;
             tareas[x].ptr_tarea_main();
         }
+        
     }
 }
 

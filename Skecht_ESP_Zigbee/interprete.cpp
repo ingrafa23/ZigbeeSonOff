@@ -41,74 +41,78 @@ char strEqual(char *a, char *b)
  * @param b el segundo string a comparar
  * @return retorna true si son iguales o false si son diferentes
 */
-void interpreteIntrucciones(char *commandIntrucciones)
+void interpreteIntrucciones(char *commandIntrucciones, char _numSensor)
 {
-    for (unsigned int i = 0; i < MAX_ORDENES; i++)
+    for (unsigned char i = 0; i < MAX_ORDENES; i++)
     {
         if(strEqual(commandIntrucciones,instrucciones[i]))
         {
-            fifoInteprete.fillBuffer(i);
+            fifoInteprete.fillBuffer(i,_numSensor);
             break;
         }
     }
 }
 
 void interpreteEjecuta()
-{    
+{    //Serial1.println("Ejecutando interpreteEjecuta");
     if(fifoInteprete.statusBuffer())
     {
-        unsigned char command = fifoInteprete.getcomandBuffer();
+        unsigned char command, numSensor;
+        unsigned char myStatus = fifoInteprete.getcomandBuffer(&command,&numSensor);
 
         Serial1.print("Comando : ");Serial1.println(command);
-
+        Serial1.print("Numero de Sensor : ");Serial1.println(numSensor);
         Serial1.println(instrucciones[command]);
-    
-        switch (command)
+        
+        if (myStatus)
         {
-            case 0:
-                break;
-            
-            case 1:
-                setEstadoBooking(ESTADO_REGISTER);
-                //setEstadoAroLed(ESTADO_REGISTER_ARO_LED);
-                break;
-            
-             case 2:
-                setEstadoBooking(ESTADO_UNREGISTER);
-                //setEstadoAroLed(ESTADO_UNREGISTER_ARO_LED);
-                break;
-
-            case 3:
-                setEstadoBooking(ESTADO_RESERVED);
-                //setEstadoAroLed(ESTADO_RESERVED_ARO_LED);
-                break;
-
-            case 4:
-                setEstadoBooking(ESTADO_REGISTER);
-                //setEstadoAroLed(ESTADO_REGISTER_ARO_LED);
-                break;
-
-            case 5:
-                setEstadoBooking(ESTADO_REGISTER);
-                //setEstadoAroLed(ESTADO_REGISTER_ARO_LED);
-                break;
-
-            case 6:
-                //setEstadoAroLed(ESTADO_VALIDATIO_ARO_LED);
-                break;
-            
-            case 7:
-                setEstadoBooking(ESTADO_BUSY);
-                //setEstadoAroLed(ESTADO_BUSY_ARO_LED);
-                break;
+            switch (command)
+            {
+                case 0:
+                    break;
                 
-            case 8:
-                setEstadoBooking(ESTADO_REGISTER);
-                //setEstadoAroLed(ESTADO_REGISTER_ARO_LED);
-                break;
-            
-            default:
-                break;
+                case 1:
+                    setEstadoBooking(ESTADO_REGISTER,numSensor);
+                    //setEstadoAroLed(ESTADO_REGISTER_ARO_LED);
+                    break;
+                
+                case 2:
+                    setEstadoBooking(ESTADO_UNREGISTER,numSensor);
+                    //setEstadoAroLed(ESTADO_UNREGISTER_ARO_LED);
+                    break;
+
+                case 3:
+                    setEstadoBooking(ESTADO_RESERVED,numSensor);
+                    //setEstadoAroLed(ESTADO_RESERVED_ARO_LED);
+                    break;
+
+                case 4:
+                    setEstadoBooking(ESTADO_REGISTER,numSensor);
+                    //setEstadoAroLed(ESTADO_REGISTER_ARO_LED);
+                    break;
+
+                case 5:
+                    setEstadoBooking(ESTADO_REGISTER,numSensor);
+                    //setEstadoAroLed(ESTADO_REGISTER_ARO_LED);
+                    break;
+
+                case 6:
+                    //setEstadoAroLed(ESTADO_VALIDATIO_ARO_LED);
+                    break;
+                
+                case 7:
+                    setEstadoBooking(ESTADO_BUSY,numSensor);
+                    //setEstadoAroLed(ESTADO_BUSY_ARO_LED);
+                    break;
+                    
+                case 8:
+                    setEstadoBooking(ESTADO_REGISTER,numSensor);
+                    //setEstadoAroLed(ESTADO_REGISTER_ARO_LED);
+                    break;
+                
+                default:
+                    break;
+            }
         }
     }
 }

@@ -5,15 +5,18 @@
 #include <ESP8266WiFi.h>
 
 
+#include "com_zigbee.h"
+#include "protocoloZigbee.h"
 unsigned char estadoBooking;
 
 /**
  * @brief setEstadoBooking asigana un nuevo estadp
  * @param mEstado valor del estado
 */
-void setEstadoBooking(unsigned char mEstado)
+void setEstadoBooking(unsigned char mEstado, unsigned char _numSensor)
 {
-    estadoBooking = mEstado;
+    //estadoBooking = mEstado;
+    Sensor_CambiarEstado_MaquinaEstado(_numSensor,mEstado);
 }
 
 /**
@@ -28,30 +31,31 @@ unsigned char getEstadoBooking()
 /**
  * @brief mainEstadoUnregister es el main que ejuta las tarea de No registrado
 */
-void mainEstadoUnregister()
+void mainEstadoUnregister(unsigned char _numSensor)
 {
     Serial1.println("Ejecutando estado UNREGISTER");
-    // Serializacion Json
-    String json_status_unregister;
     
-    json_status_unregister = F("{\"device_id\":\"");
-    json_status_unregister += getDeviceId();
-    json_status_unregister += F("\",");
-    json_status_unregister += F("\"customer_id\":\"None\"");
-    json_status_unregister += F(",");
-    json_status_unregister += F("\"state\":\"unregistered\"");
-    json_status_unregister += F(",");
-    json_status_unregister += F("\"space_id\":\"");
-    json_status_unregister += getSpaceIdt();
-    json_status_unregister += F("\",");
-    json_status_unregister += F("\"settings\":{\"heartbeat\":");
-    json_status_unregister += getValueHeartbeat()/1000.0;
-    json_status_unregister += F(",");
-    json_status_unregister += F("\"ip_addr\":\"");
-    json_status_unregister += WiFi.localIP().toString();
-    json_status_unregister += F("\"}}");
+    // Serializacion Json Estado Register
+    String json_status_register;
+    json_status_register = "{\"sensor_id\":\"" + getDeviceIdSensor(_numSensor) + "\",";
 
-    Serial1.print("Enviando json :"); Serial1.println(json_status_unregister);
+    json_status_register += "\"sensor_mac\":\"" + getDeviceMacSensor(_numSensor) + "\",";
+
+    json_status_register += "\"sensor_value\":\"" + getValueSensor(_numSensor) + "\",";
+
+    json_status_register += "\"customer_id\":\"None\",";
+
+    json_status_register += "\"state\":\"unregistered\",";
+
+    json_status_register += "\"space_id\":\"" + getSpaceIdt() + "\",";
+
+    json_status_register += "\"settings\":{\"heartbeat\":20,";
+
+    json_status_register += "\"ip_addr\":\"" + WiFi.localIP().toString() + "\",";
+
+    json_status_register += "\"device_mac\":\"" + getMacBridge() + "\"}}";
+
+    Serial1.print("Enviando json :"); Serial1.println(json_status_register);
 
     //sendDataJson(json_status_unregister,"/hw/check_status");
     // Fin Json
@@ -60,27 +64,30 @@ void mainEstadoUnregister()
 /**
  * @brief mainEstadoRegister es el main que ejuta las tarea de registrado
 */
-void mainEstadoRegister()
+void mainEstadoRegister(unsigned char _numSensor)
 {
     Serial1.println("Ejecutando estado REGISTER");
     // Serializacion Json Estado Register
     String json_status_register;
-    json_status_register = F("{\"device_id\":\"");
-    json_status_register += getDeviceId();
-    json_status_register += F("\",");
-    json_status_register += F("\"customer_id\":\"None\"");
-    json_status_register += F(",");
-    json_status_register += F("\"state\":\"ready\"");
-    json_status_register += F(",");
-    json_status_register += F("\"space_id\":\"");
-    json_status_register += getSpaceIdt();
-    json_status_register += F("\",");
-    json_status_register += F("\"settings\":{\"heartbeat\":");
-    json_status_register += getValueHeartbeat()/1000.0;
-    json_status_register += F(",");
-    json_status_register += F("\"ip_addr\":\"");
-    json_status_register += WiFi.localIP().toString();
-    json_status_register += F("\"}}");
+    json_status_register = "{\"sensor_id\":\"" + getDeviceIdSensor(_numSensor) + "\",";
+
+    json_status_register += "\"sensor_mac\":\"" + getDeviceMacSensor(_numSensor) + "\",";
+
+    json_status_register += "\"sensor_value\":\"" + getValueSensor(_numSensor) + "\",";
+
+    json_status_register += "\"customer_id\":\"None\",";
+
+    json_status_register += "\"state\":\"ready\",";
+
+    json_status_register += "\"space_id\":\"" + getSpaceIdt() + "\",";
+
+    json_status_register += "\"settings\":{\"heartbeat\":20,";
+
+    json_status_register += "\"ip_addr\":\"" + WiFi.localIP().toString() + "\",";
+
+    json_status_register += "\"device_mac\":\"" + getMacBridge() + "\"}}";
+
+    
     
     Serial1.println(json_status_register);
     //sendDataJson(json_status_register,"/hw/check_status");
@@ -90,29 +97,31 @@ void mainEstadoRegister()
 /**
  * @brief mainEstadoReserved es el main que ejuta las tarea de Reservado
 */
-void mainEstadoReserved()
+void mainEstadoReserved(unsigned char _numSensor)
 {
     Serial1.println("Ejecutando estado RESERVED");
     
-    // Serializacion Json Estado Register
+    // Serializacion Json Estado waiting_confirmation
     String json_status_register;
+    json_status_register = "{\"sensor_id\":\"" + getDeviceIdSensor(_numSensor) + "\",";
+
+    json_status_register += "\"sensor_mac\":\"" + getDeviceMacSensor(_numSensor) + "\",";
+
+    json_status_register += "\"sensor_value\":\"" + getValueSensor(_numSensor) + "\",";
     
-    json_status_register = F("{\"device_id\":\"");
-    json_status_register += getDeviceId();
-    json_status_register += F("\",");
-    json_status_register += F("\"customer_id\":\"None\"");
-    json_status_register += F(",");
-    json_status_register += F("\"state\":\"waiting_confirmation\"");
-    json_status_register += F(",");
-    json_status_register += F("\"space_id\":\"");
-    json_status_register += getSpaceIdt();
-    json_status_register += F("\",");
-    json_status_register += F("\"settings\":{\"heartbeat\":");
-    json_status_register += getValueHeartbeat()/1000.0;
-    json_status_register += F(",");
-    json_status_register += F("\"ip_addr\":\"");
-    json_status_register += WiFi.localIP().toString();
-    json_status_register += F("\"}}");
+    json_status_register += "\"customer_id\":\"None\",";
+
+    json_status_register += "\"state\":\"waiting_confirmation\",";
+
+    json_status_register += "\"space_id\":\"" + getSpaceIdt() + "\",";
+
+    json_status_register += "\"settings\":{\"heartbeat\":20,";
+
+    json_status_register += "\"ip_addr\":\"" + WiFi.localIP().toString() + "\",";
+
+    json_status_register += "\"device_mac\":\"" + getMacBridge() + "\"}}";
+
+    Serial1.print("Enviando json :"); Serial1.println(json_status_register);
 
     Serial1.println(json_status_register);
     //sendDataJson(json_status_register,"/hw/check_status");
@@ -123,61 +132,80 @@ void mainEstadoReserved()
  * @brief mainEstadoBusy es el main que ejuta las tarea de Reservado
 */
 
-void mainEstadoBusy()
+void mainEstadoBusy(unsigned char _numSensor)
 {
     Serial1.println("Ejecutando estado BUSY");
     Serial1.println("Ejecutando estado RESERVED");
     Serial1.println("Ejecutando estado REGISTER");
-    // Serializacion Json Estado Register
-    String json_status_register;
-
-    json_status_register = F("{\"device_id\":\"");
-    json_status_register += getDeviceId();
-    json_status_register += F("\",");
-    json_status_register += F("\"customer_id\":\"None\"");
-    json_status_register += F(",");
-    json_status_register += F("\"state\":\"booked\"");
-    json_status_register += F(",");
-    json_status_register += F("\"space_id\":\"");
-    json_status_register += getSpaceIdt();
-    json_status_register += F("\",");
-    json_status_register += F("\"settings\":{\"heartbeat\":");
-    json_status_register += getValueHeartbeat()/1000.0;
-    json_status_register += F(",");
-    json_status_register += F("\"ip_addr\":\"");
-    json_status_register += WiFi.localIP().toString();
-    json_status_register += F("\"}}");
+    // Serializacion Json Estado booked
     
+    String json_status_register;
+    json_status_register = "{\"sensor_id\":\"" + getDeviceIdSensor(_numSensor) + "\",";
+
+    json_status_register += "\"sensor_mac\":\"" + getDeviceMacSensor(_numSensor) + "\",";
+
+    json_status_register += "\"sensor_value\":\"" + getValueSensor(_numSensor) + "\",";
+
+    json_status_register += "\"customer_id\":\"None\",";
+
+    json_status_register += "\"state\":\"booked\",";
+
+    json_status_register += "\"space_id\":\"" + getSpaceIdt() + "\",";
+
+    json_status_register += "\"settings\":{\"heartbeat\":20,";
+
+    json_status_register += "\"ip_addr\":\"" + WiFi.localIP().toString() + "\",";
+
+    json_status_register += "\"device_mac\":\"" + getMacBridge() + "\"}}";
+
+    Serial1.print("Enviando json :"); Serial1.println(json_status_register);
+
     Serial1.println(json_status_register);
+
     //sendDataJson(json_status_register,"/hw/check_status");
     // Fin Json
 }
 
 /**
  * @brief mainEstadosBooking es la maquina de estado de las diferentes condiciones de operacion
-*/
+ */
 void mainEstadosBooking()
-{    
-    switch (getEstadoBooking())
+{
+    for (unsigned char ki = 0; ki < getNumSensorVinvulados(); ki++)
     {
-        case ESTADO_UNREGISTER:
-            mainEstadoUnregister();
-            break;
+        if (getEstadoVinculadoSensor(ki)>0)
+        {
+            switch (getEstadoMaquinaSensor(ki))
+            {
+                case ESTADO_UNREGISTER:
+                    mainEstadoUnregister(ki);
+                    break;
 
-        case ESTADO_REGISTER:
-            mainEstadoRegister();
-            break;
+                case ESTADO_REGISTER:
+                    mainEstadoRegister(ki);
+                    break;
 
+                
+                case ESTADO_RESERVED:
+                    mainEstadoReserved(ki);
+                    break;
+                
+                case ESTADO_BUSY:
+                    mainEstadoBusy(ki);
+                    break;
+                
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            Serial1.print("Sensor "); Serial1.print(ki);Serial1.println(" No conectado");
+        }
         
-        case ESTADO_RESERVED:
-            mainEstadoReserved();
-            break;
         
-        case ESTADO_BUSY:
-            mainEstadoBusy();
-            break;
-        
-        default:
-            break;
     }
+    
+        
+    
 }

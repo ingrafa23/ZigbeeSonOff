@@ -11,9 +11,12 @@
 #include "configuracionesdevice.h"
 #include "atiendeSendJson.h"
 #include "interpretecomandojson.h"
+//----------------------------------------------------------------
+//Protocolo de comunicacion y conexion con los sensores Zigbee
+#include "protocoloZigbee.h"
 //-------------------------------------------------
 //Tareas del Core0
-#define NUMERO_TAREAS_CORE0 6
+#define NUMERO_TAREAS_CORE0 7
 // Tareas core0 start
 //Atiende Tarea OTA 
 //OTA being
@@ -26,6 +29,7 @@ ota_esp conexionOta;
 
 void inicializaOta()
 {
+    Serial1.println("Inicializando Ota");
     conexionOta.begin();
 }
 void mainOta()
@@ -66,7 +70,7 @@ void tareaMainInterprete()
             }            
         }
         Serial1.println(data_recibida);
-        interpreteIntrucciones(data_recibida);
+        //interpreteIntrucciones(data_recibida);
     }    
 }
 
@@ -75,9 +79,7 @@ TAREA tareasCore0 [NUMERO_TAREAS_CORE0];
 void setup() 
 {
     Serial1.begin(115200);
-    ESP.wdtDisable();
-    ESP.wdtFeed();
-    Serial1.println("Inicializando el Programa\n");
+    Serial1.println("\nInicializando el Programa\n");
 
     int indiceTareasCore0 = 0;
 
@@ -88,6 +90,8 @@ void setup()
     asignarTareas(&tareasCore0[indiceTareasCore0++], NULL, tareaMainInterprete,  10, 0);
     asignarTareas(&tareasCore0[indiceTareasCore0++], NULL, tareaMainInterpreteEjecuta,  10, 0);
     asignarTareas(&tareasCore0[indiceTareasCore0++], NULL, mainInterpreteComandosJson,  1000, 0);
+    //Tarea que ejecuta el protocolo Zigbee
+    asignarTareas(&tareasCore0[indiceTareasCore0++], ConfigProtocolo, loopLeerSensoresZigbee,  10, 0);
 
     //Inicializa Tareas Core0
     incializaTareas(tareasCore0, getMomento(),NUMERO_TAREAS_CORE0);
@@ -99,5 +103,6 @@ void loop()
 {
   // put your main code here, to run repeatedly:
   ejecutaTareas(tareasCore0, getMomento(), NUMERO_TAREAS_CORE0);
-  delay(1); 
+  ESP.wdtDisable(); 
+  
 }
