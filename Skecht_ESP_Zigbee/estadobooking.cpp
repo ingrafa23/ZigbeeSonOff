@@ -179,8 +179,6 @@ void mainEstadoError(unsigned char _numSensor)
 
     json_status_register += "\"sensor_mac\":\"" + getDeviceMacSensor(_numSensor) + "\",";
 
-    json_status_register += "\"sensor_value\":\"" + getValueSensor(_numSensor) + "\",";
-
     json_status_register += "\"customer_id\":\""+getCustomerId()+"\",";
 
     json_status_register += "\"state\":\"no_connected\",";
