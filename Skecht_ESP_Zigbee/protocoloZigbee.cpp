@@ -281,10 +281,9 @@ void comandosVincularNuevoSensor()
         timeoutAnterior = millis();
         flagConectado = ESTADO_VINCULANDO;
         flagVinculado = 0;
-        delay(500);
+        blinkLed(200,5);
         Serial1.println("Enviando Vinculacion : FE 0B 02 01 02 F9 FF 00 0D 37 C8");
         Enviar_Serial(8, 0x02, 0x01, 0x02, 0xF9, 0xFF, 0x00, 0x0D, 0x37);
-        digitalWrite(LED_BLUE,0);
         delay(500);
       }
     }
@@ -292,6 +291,7 @@ void comandosVincularNuevoSensor()
     {
       if ((actualityTime > 4000) && (actualityTime < 10000))
       {
+        blinkLed(100,10);
         //comandosDesvincularSensor();
         DesvincularTodo.flag = 1;
         DesvincularTodo.cont = 0;
@@ -786,6 +786,14 @@ void ProcesarMensaje()
     }
   }
   Serial1.print("flagConectado : "); Serial1.println(flagConectado);
+}
+
+void blinkLed(unsigned int mT, unsigned char mParp){
+  for (unsigned char ki = 0; ki < 2*mParp; ki++)
+  {
+    digitalWrite(LED_BLUE,!digitalRead(LED_BLUE));
+    delay(mT);
+  }
 }
 
 /*

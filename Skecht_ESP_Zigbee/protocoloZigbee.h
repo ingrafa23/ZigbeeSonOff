@@ -90,4 +90,11 @@ String getMacBridge();
  * @brief getNumSensorVinvulados devuelve el numero de sensores vinculados
  */
 unsigned char getNumSensorVinvulados();
+
+/**
+ * @brief blinkLed ejecuta una secuencia de parpade de el led
+ * @param mT es el tiempo en ms, en el que parpadea el leg
+ * @param mParp es el numero de parpadeos del led
+ */
+void blinkLed(unsigned int mT, unsigned char mParp);
 #endif
